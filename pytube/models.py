@@ -32,7 +32,8 @@ class Video(object):
         self.filename = filename
         self.__dict__.update(**attributes)
 
-    def download(self, path=None, chunk_size=8 * 1024,
+<<<<<<< HEAD
+    def download(self, stringfile=None, path=None, chunk_size=8 * 1024,
                  on_progress=None, on_finish=None, force_overwrite=False):
         """
         Downloads the file of the URL defined within the class
@@ -67,23 +68,31 @@ class Video(object):
                         meta_data.get("content-length"))
         self._bytes_received = 0
         start = clock()
+
+        def download_file(self, dst_file):
+          
+            # Print downloading message
+            print("\nDownloading: '{0}.{1}' (Bytes: {2}) \nto path: {3}\n\n".format(
+                  self.filename, self.extension, sizeof(file_size), fullpath))
+
+            while True:
+                self._buffer = response.read(chunk_size)
+                if not self._buffer:
+                    if on_finish:
+                        on_finish(fullpath)
+                    break
+
+                self._bytes_received += len(self._buffer)
+                dst_file.write(self._buffer)
+                if on_progress:
+                    on_progress(self._bytes_received, file_size, start)
+
         try:
-            with open(fullpath, 'wb') as dst_file:
-                # Print downloading message
-                print("\nDownloading: '{0}.{1}' (Bytes: {2}) \nto path: {3}\n\n".format(
-                      self.filename, self.extension, sizeof(file_size), path))
-
-                while True:
-                    self._buffer = response.read(chunk_size)
-                    if not self._buffer:
-                        if on_finish:
-                            on_finish(fullpath)
-                        break
-
-                    self._bytes_received += len(self._buffer)
-                    dst_file.write(self._buffer)
-                    if on_progress:
-                        on_progress(self._bytes_received, file_size, start)
+            if stringfile:
+                download_file(self,stringfile)
+            else:
+                with open(fullpath, 'wb') as dst_file:
+                    download_file(self, dst_file)
 
         # Catch possible exceptions occurring during download
         except IOError:
@@ -100,6 +109,7 @@ class Video(object):
             remove(fullpath)
             raise KeyboardInterrupt("\n\nInterrupt signal given.\nDeleting incomplete video"
                   "('{0}.{1}').\n\n".format(self.filename, self.extension))
+
 
     def __repr__(self):
         """A cleaner representation of the class instance."""
