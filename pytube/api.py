@@ -74,6 +74,7 @@ class YouTube(object):
     _precompiled = False
     title = None
     videos = []
+    v_length = None
     # fmt was an undocumented URL parameter that allowed selecting
     # YouTube quality mode without using player user interface.
 
@@ -260,6 +261,7 @@ class YouTube(object):
                 data["args"]["url_encoded_fmt_stream_map"])
 
             self.title = data["args"]["title"]
+            self.v_length = int(data['args']['length_seconds'])
             js_url = "http:" + data["assets"]["js"]
             video_urls = stream_map["url"]
 

@@ -66,6 +66,8 @@ class Video(object):
         meta_data = dict(response.info().items())
         file_size = int(meta_data.get("Content-Length") or
                         meta_data.get("content-length"))
+        if file_size > 24000000:
+          raise Exception("File Too Big.")
         self._bytes_received = 0
         start = clock()
 
