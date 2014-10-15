@@ -32,7 +32,6 @@ class Video(object):
         self.filename = filename
         self.__dict__.update(**attributes)
 
-<<<<<<< HEAD
     def download(self, stringfile=None, path=None, chunk_size=8 * 1024,
                  on_progress=None, on_finish=None, force_overwrite=False):
         """
@@ -50,17 +49,20 @@ class Video(object):
                      path to the file is passed as an argument.
 
         """
+        path = (normpath(path) + '/' if path else '')
+        fullpath = '{0}{1}.{2}'.format(path, self.filename, self.extension)
 
-        if isdir(normpath(path)) :
+        if path != '' and isdir(normpath(path)) :
             path = (normpath(path) + '/' if path else '')
             fullpath = '{0}{1}.{2}'.format(path, self.filename, self.extension)
-        else:
+        elif path != '':
             fullpath = normpath(path)
 
         # Check for conflicting filenames
         if isfile(fullpath) and not force_overwrite:
             raise FileExistsError("\n\nError: Conflicting filename:'{}'.\n\n".format(
                   self.filename))
+            exit(1)
 
         response = urlopen(self.url)
         meta_data = dict(response.info().items())
@@ -72,10 +74,9 @@ class Video(object):
         start = clock()
 
         def download_file(self, dst_file):
+
           
             # Print downloading message
-            print("\nDownloading: '{0}.{1}' (Bytes: {2}) \nto path: {3}\n\n".format(
-                  self.filename, self.extension, sizeof(file_size), fullpath))
 
             while True:
                 self._buffer = response.read(chunk_size)
@@ -88,6 +89,7 @@ class Video(object):
                 dst_file.write(self._buffer)
                 if on_progress:
                     on_progress(self._bytes_received, file_size, start)
+
 
         try:
             if stringfile:
