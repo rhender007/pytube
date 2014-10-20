@@ -10,6 +10,7 @@ except ImportError:
     from urllib.request import urlopen
 from pytube.utils import sizeof
 from os.path import isdir
+from services import errors
 
 
 class Video(object):
@@ -69,7 +70,7 @@ class Video(object):
         file_size = int(meta_data.get("Content-Length") or
                         meta_data.get("content-length"))
         if file_size > 24000000:
-          raise Exception("File Too Big.")
+          raise YoutubeException("File Too Big.")
         self._bytes_received = 0
         start = clock()
 
