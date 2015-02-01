@@ -8,9 +8,10 @@ try:
     from urllib2 import urlopen
 except ImportError:
     from urllib.request import urlopen
-from pytube.utils import sizeof
 from os.path import isdir
 from services import errors
+from sys import exit
+from .utils import sizeof
 
 
 class Video(object):
