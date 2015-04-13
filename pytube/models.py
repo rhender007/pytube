@@ -51,21 +51,6 @@ class Video(object):
                      path to the file is passed as an argument.
 
         """
-        path = (normpath(path) + '/' if path else '')
-        fullpath = '{0}{1}.{2}'.format(path, self.filename, self.extension)
-
-        if path != '' and isdir(normpath(path)) :
-            path = (normpath(path) + '/' if path else '')
-            fullpath = '{0}{1}.{2}'.format(path, self.filename, self.extension)
-        elif path != '':
-            fullpath = normpath(path)
-
-        # Check for conflicting filenames
-        if isfile(fullpath) and not force_overwrite:
-            raise FileExistsError("\n\nError: Conflicting filename:'{}'.\n\n".format(
-                  self.filename))
-            exit(1)
-
         response = urlopen(self.url)
         meta_data = dict(response.info().items())
         file_size = int(meta_data.get("Content-Length") or
