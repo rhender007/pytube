@@ -9,7 +9,6 @@ try:
 except ImportError:
     from urllib.request import urlopen
 from os.path import isdir
-from services import errors
 from sys import exit
 from .utils import sizeof
 
