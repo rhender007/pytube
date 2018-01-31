@@ -4,10 +4,7 @@ from __future__ import unicode_literals, print_function
 from os.path import normpath, isfile
 from os import remove
 from time import clock
-try:
-    from urllib2 import urlopen
-except ImportError:
-    from urllib.request import urlopen
+from google.appengine.api import urlfetch
 from os.path import isdir
 from sys import exit
 from .utils import sizeof
@@ -50,7 +47,7 @@ class Video(object):
                      path to the file is passed as an argument.
 
         """
-        response = urlopen(self.url)
+        response = urlfetch.fetch(self.url)
         meta_data = dict(response.info().items())
         file_size = int(meta_data.get("Content-Length") or
                         meta_data.get("content-length"))
@@ -61,7 +58,7 @@ class Video(object):
 
         def download_file(self, dst_file):
 
-          
+
             # Print downloading message
 
             while True:

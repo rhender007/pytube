@@ -6,12 +6,11 @@ from .exceptions import MultipleObjectsReturned, YouTubeError, CipherError
 from .tinyjs import JSVM
 from .models import Video
 from .utils import safe_filename
+from google.appengine.api import urlfetch
 try:
-    from urllib2 import urlopen
     from urlparse import urlparse, parse_qs, unquote
 except ImportError:
     from urllib.parse import urlparse, parse_qs, unquote
-    from urllib.request import urlopen
 
 import re
 import json
@@ -230,7 +229,7 @@ class YouTube(object):
         self.title = None
         self.videos = []
 
-        response = urlopen(self.url)
+        response = urlfetch.fetch(self.url)
 
         if response:
             content = response.read().decode("utf-8")
@@ -329,7 +328,7 @@ class YouTube(object):
         # Getting JS code (if hasn't downloaded yet)
         if not self._js_code:
             # TODO: don't use conditional expression if line > 79 characters.
-            self._js_code = (urlopen(url).read().decode()
+            self._js_code = (urlfetch.fetch(url).read().decode()
                              if not self._js_code else self._js_code)
 
         try:
