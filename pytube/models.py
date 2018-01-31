@@ -48,7 +48,7 @@ class Video(object):
 
         """
         response = urlfetch.fetch(self.url)
-        meta_data = dict(response.info().items())
+        meta_data = response.headers
         file_size = int(meta_data.get("Content-Length") or
                         meta_data.get("content-length"))
         if file_size > 24000000:

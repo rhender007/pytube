@@ -232,7 +232,7 @@ class YouTube(object):
         response = urlfetch.fetch(self.url)
 
         if response:
-            content = response.read().decode("utf-8")
+            content = response.content.decode("utf-8")
             try:
                 player_conf = content[18 + content.find("ytplayer.config = "):]
                 bracket_count = 0
@@ -328,7 +328,7 @@ class YouTube(object):
         # Getting JS code (if hasn't downloaded yet)
         if not self._js_code:
             # TODO: don't use conditional expression if line > 79 characters.
-            self._js_code = (urlfetch.fetch(url).read().decode()
+            self._js_code = (urlfetch.fetch(url).content.decode()
                              if not self._js_code else self._js_code)
 
         try:
